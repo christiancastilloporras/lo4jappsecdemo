@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  attacker:
+    build: .
+  log4shell:
+    image: ghcr.io/christophetd/log4shell-vulnerable-app
+    links:
+      - "attacker:malicious"
+  nginx-reverse-proxy:
+    links:
+      - "log4shell:web"
+    ports:
+      - 8080:80
+    ipc: host
+    image: checkpoint/infinity-next-nginx
+    volumes:
+      - ./nginx-reverse-proxy/:/etc/nginx/conf.d/
+  agent-container:
+    ipc: host
+    volumes:
+      - ./agent-container/data:/etc/cp/data
+      - ./agent-container/conf:/etc/cp/conf
+      - ./agent-container/logs:/var/log/nano_agent
+    image: checkpoint/infinity-next-nano-agent
+    command: ["/cp-nano-agent", "--token", "$TOKEN"]
