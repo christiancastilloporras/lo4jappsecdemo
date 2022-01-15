@@ -10,7 +10,7 @@ services:
     links:
       - "log4shell:web"
     ports:
-      - 8080:80
+      - 80:80
     ipc: host
     image: checkpoint/infinity-next-nginx
     volumes:
